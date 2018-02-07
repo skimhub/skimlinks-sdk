@@ -12,5 +12,6 @@ The Skimlinks SDK is a Python 2.7 wrapper around the public Skimlinks APIs (docu
 
 The repo provides example scripts for the most common tasks requested by Skimlinks' publishers. Check out the files located in the `examples` folder. 
 
-In order to run the examples simply execute them from the command line. For example
+In order to run the examples simply execute them from the command line. For example:
+
 ```python examples/merchant_get_monetizable_domains.py --account-type=publisher_admin --account-id=your_account_id --public-key=public_key```
