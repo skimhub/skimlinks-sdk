@@ -5,7 +5,7 @@ The Skimlinks SDK is a Python 2.7 wrapper around the public Skimlinks APIs (docu
 ## Installation
 
 1. Clone the project
-2. Run `pip install -r requriements.txt` to install dependencies
+2. Run `pip install -r requirements.txt` to install dependencies
 3. Run `pip install -e .` to install the libraries
 
 ## Examples
