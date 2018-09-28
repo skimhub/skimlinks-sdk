@@ -56,6 +56,12 @@ class MerchantAPI():
 
         return res.json()
 
+    def domains(self):
+        res = requests.get(self.format_url("domains"), params=self.base_params())
+        assert res.status_code == 200
+
+        return res.json()
+
     def offers(self, **kwargs):
 
         api_params = self.base_params()

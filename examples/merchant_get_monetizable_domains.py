@@ -29,29 +29,11 @@ def cmdline_main():
         public_key=args.public_key
     )
 
-    offset = 0
-    distinct_domains = []
-
-    while True:
-        LOGGER.info("requesting with offset: {}".format(offset))
-        res = api.search(
-            offset=offset,
-            limit=200
-        )
-
-        for merchant in res.get("merchants", []):
-            for domain in merchant.get("domains", []):
-                if domain not in distinct_domains:
-                    distinct_domains.append(domain)
-
-        if not res.get("has_more"):
-            break
-
-        offset += 200
+    LOGGER.info("requesting list of domains")
+    res = api.domains()
+    distinct_domains = set([entry.get("domain") for entry in res.get("domains", [])])
 
     LOGGER.info("found {} unique merchant domains".format(len(distinct_domains)))
-
-
 
 if __name__ == '__main__':
     cmdline_main()
