@@ -3,15 +3,10 @@ import time
 
 from hashlib import md5
 
-
-ACCOUNT_TYPES = ['publisher_admin', 'publisher_user']
-
-
 class ReportingAPI():
 
-    account_type = None
-    account_id = None
-    apikey = None
+    token = None
+    publisher_id = None
 
     API_HOST = "https://reporting.skimapis.com"
     REPORT_PARAMETERS = [
@@ -33,30 +28,21 @@ class ReportingAPI():
         'merchant_search'
     ]
 
-    def __init__(self, account_type, account_id, private_key):
-        assert account_type in ACCOUNT_TYPES
-        assert isinstance(account_id, int)
-        assert len(private_key) == 32
-
-        self.account_id = account_id
-        self.account_type = account_type
-        self.apikey = private_key
+    def __init__(self, token, publisher_id):
+        self.token = token
+        self.publisher_id = publisher_id
 
     def format_url(self):
-        timestamp = int(time.time())
-        token = md5("{}{}".format(timestamp, self.apikey)).hexdigest().lower()
-
-        request_url = "{}/{}/{}/reports?timestamp={}&token={}".format(
+        request_url = "{}/publisher/{}/reports".format(
             self.API_HOST,
-            self.account_type,
-            self.account_id,
-            timestamp,
-            token
+            self.publisher_id
         )
         return request_url
 
     def report(self, **kwargs):
-        api_params = {}
+        api_params = {
+            "access_token": self.token
+        }
 
         for key, value in kwargs.iteritems():
             assert key in self.REPORT_PARAMETERS

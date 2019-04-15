@@ -3,37 +3,30 @@ import json
 
 class MerchantAPI():
 
-    account_type = None
-    account_id = None
-    apikey = None
+    token = None
+    publisher_id = 1023
 
-    API_HOST = "https://merchants.skimapis.com/"
-    API_VERSION = "v3"
+    API_HOST = "https://merchants.skimapis.com"
+    API_VERSION = "v4"
 
     SEARCH_PARAMETERS = ["id", "a_id", "search", "vertical", "country", "favorite_type", "limit", "offset", "sort_by", "sort_dir"]
     OFFER_PARAMETERS = ["search", "merchant_id", "a_id", "vertical", "country", "period", "favourite_type", "limit", "offset", "sort_by", "sort_dir"]
 
-    def __init__(self, account_type, account_id, public_key):
-        assert account_type in ["publisher_admin", "publisher_user"]
-        assert isinstance(account_id, int)
-        assert len(public_key) == 32
-
-        self.account_id = account_id
-        self.account_type = account_type
-        self.apikey = public_key
+    def __init__(self, token, publisher_id):
+        self.token = token
+        self.publisher_id = publisher_id
 
     def format_url(self,endpoint):
-        return "{}/{}/{}".format(
+        return "{}/{}/publisher/{}/{}".format(
             self.API_HOST,
             self.API_VERSION,
+            self.publisher_id,
             endpoint
         )
 
     def base_params(self):
         return {
-            "account_type": self.account_type,
-            "account_id": self.account_id,
-            "apikey": self.apikey
+            "access_token": self.token
         }
 
     def search(self, **kwargs):
@@ -51,7 +44,8 @@ class MerchantAPI():
         return res.json()
 
     def verticals(self):
-        res = requests.get(self.format_url("verticals"), params=self.base_params())
+        res = requests.get("{}/{}/verticals".format(self.API_HOST, self.API_VERSION), params=self.base_params())
+        
         assert res.status_code == 200
 
         return res.json()
